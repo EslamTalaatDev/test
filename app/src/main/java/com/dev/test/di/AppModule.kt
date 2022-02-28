@@ -1,9 +1,12 @@
 package com.dev.test.di
 
+import android.content.Context
 import com.dev.test.Network.ApiService
+import com.dev.test.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,6 +41,12 @@ object AppModule {
 
 
 
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase = AppDatabase.getDatabase(appContext)
 
+    @Singleton
+    @Provides
+    fun provideFruitDao(db: AppDatabase) = db.LocalDao()
 
 }
