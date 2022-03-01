@@ -1,4 +1,4 @@
-package com.dev.test.Util
+package com.dev.test.util
 
 import android.view.View
 import android.widget.AdapterView

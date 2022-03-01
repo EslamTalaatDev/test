@@ -1,7 +1,6 @@
-package com.dev.test.Network
+package com.dev.test.data.network
 
-import com.dev.test.Model.CurrrencyModel
-import com.dev.test.Network.ApiService
+import com.dev.test.model.CurrrencyModel
 import javax.inject.Inject
 
 class ApiServiceImpl @Inject constructor(private val apiService: ApiService) {

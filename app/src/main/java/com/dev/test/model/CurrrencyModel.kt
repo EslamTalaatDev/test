@@ -1,4 +1,4 @@
-package com.dev.test.Model
+package com.dev.test.model
 
 import com.google.gson.annotations.Expose
 

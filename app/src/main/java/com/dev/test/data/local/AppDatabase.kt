@@ -1,10 +1,10 @@
-package com.dev.test.local
+package com.dev.test.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.dev.test.Model.CurrenciesHistory
+import com.dev.test.model.CurrenciesHistory
 
 
 @Database(entities = [CurrenciesHistory::class], version = 1)

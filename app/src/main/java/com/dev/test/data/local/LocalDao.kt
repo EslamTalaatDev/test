@@ -1,11 +1,10 @@
-package com.dev.test.local
+package com.dev.test.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.dev.test.Model.CurrenciesHistory
+import com.dev.test.model.CurrenciesHistory
 import kotlinx.coroutines.flow.Flow
 
 @Dao

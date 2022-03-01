@@ -1,4 +1,4 @@
-package com.dev.test.Util
+package com.dev.test.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode

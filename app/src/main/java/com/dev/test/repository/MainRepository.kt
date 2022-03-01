@@ -1,9 +1,9 @@
-package com.dev.test.Repository
+package com.dev.test.repository
 
-import com.dev.test.Model.CurrenciesHistory
-import com.dev.test.Model.CurrrencyModel
-import com.dev.test.Network.ApiServiceImpl
-import com.dev.test.local.LocalDao
+import com.dev.test.model.CurrenciesHistory
+import com.dev.test.model.CurrrencyModel
+import com.dev.test.data.network.ApiServiceImpl
+import com.dev.test.data.local.LocalDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

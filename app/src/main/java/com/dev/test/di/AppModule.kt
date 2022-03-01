@@ -1,8 +1,9 @@
 package com.dev.test.di
 
 import android.content.Context
-import com.dev.test.Network.ApiService
-import com.dev.test.local.AppDatabase
+import com.dev.test.data.network.ApiService
+import com.dev.test.data.local.AppDatabase
+import com.dev.test.ui.adapter.CurrenciesHistoryAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +24,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesApiService(url:String) : ApiService =
+    fun providesApiService(url: String): ApiService =
         Retrofit.Builder()
 
             .baseUrl(url)
@@ -32,21 +33,26 @@ object AppModule {
 
             .build()
             .create(ApiService::class.java)
+
     private var httpClient = OkHttpClient.Builder()
-         .retryOnConnectionFailure(true)
-         .addInterceptor(
+        .retryOnConnectionFailure(true)
+        .addInterceptor(
             HttpLoggingInterceptor().apply {
                 this.level = HttpLoggingInterceptor.Level.BODY
             })
 
 
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase =
+        AppDatabase.getDatabase(appContext)
 
     @Singleton
     @Provides
-    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase = AppDatabase.getDatabase(appContext)
+    fun provideDao(db: AppDatabase) = db.LocalDao()
 
     @Singleton
     @Provides
-    fun provideFruitDao(db: AppDatabase) = db.LocalDao()
+    fun curranciesAdapter(): CurrenciesHistoryAdapter = CurrenciesHistoryAdapter(ArrayList())
 
 }

@@ -1,16 +1,18 @@
-package com.dev.test.allViewModel
+package com.dev.test.ui.home.viewmodel
 
 import android.text.Editable
-import android.util.Log
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dev.test.Model.CurrenciesDetails
-import com.dev.test.Model.CurrenciesHistory
-import com.dev.test.Repository.MainRepository
-import com.dev.test.Util.ApiState
+import androidx.navigation.Navigation
+import com.dev.test.model.CurrenciesDetails
+import com.dev.test.model.CurrenciesHistory
+import com.dev.test.R
+import com.dev.test.repository.MainRepository
+import com.dev.test.util.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,13 +26,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel
 @Inject
-
 constructor(private val mainRepository: MainRepository) : ViewModel() {
     val curranciesList = ObservableArrayList<String>()
     var list = ArrayList<CurrenciesDetails>()
     var converseValue: ObservableField<String?> = ObservableField()
     var selectedCurrFrom: ObservableField<Int?> = ObservableField(0)
     var selectedCurrTo: ObservableField<Int?> = ObservableField(0)
+    var selectedCurrFromName: ObservableField<String?> = ObservableField("")
+    var selectedCurrToName: ObservableField<String?> = ObservableField("")
     var currencyFromText: ObservableField<String?> = ObservableField("")
     var currencyToText: ObservableField<String?> = ObservableField("")
     private val postStateFlow: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
@@ -59,10 +62,10 @@ constructor(private val mainRepository: MainRepository) : ViewModel() {
             }
     }
 
-    fun getCurrenciesByBase(name: String) = viewModelScope.launch {
+    fun getCurrenciesByBase() = viewModelScope.launch {
         postStateFlow.value = ApiState.Loading
 
-        mainRepository.getCurrenciesByBase(name)
+        mainRepository.getCurrenciesByBase(selectedCurrFromName.get().toString())
             .catch { e ->
                 postStateFlow.value = ApiState.Failure(e)
             }.collect { data ->
@@ -83,26 +86,35 @@ constructor(private val mainRepository: MainRepository) : ViewModel() {
     }
 
     fun onSelectItemFrom(posation: Int) {
-
+        selectedCurrFromName.set(curranciesList[posation])
         if (list.isNotEmpty()) {
-            getCurrenciesByBase(curranciesList[posation])
+            getCurrenciesByBase()
         }
 
     }
 
     fun onSelectItemTo(posation: Int) {
-        currencyToText.set(curranciesList[posation])
+        selectedCurrToName.set(curranciesList[posation])
 
     }
 
     fun getConversvalue(text: Editable) {
+        if (!TextUtils.isEmpty(currencyFromText.get().toString())) {
+            var toValue =
+                list.filter { it.name == selectedCurrToName.get().toString() }
+                    .single().value!!.toDouble()
+            converseValue.set((currencyFromText.get().toString().toDouble() * toValue).toString())
 
-        var toValue =
-            list.filter { it.name == currencyToText.get().toString() }.single().value!!.toDouble()
-        converseValue.set((currencyFromText.get().toString().toDouble() * toValue).toString())
+            // insert currency into database
+            inserCurrncy(
+                CurrenciesHistory(
+                    from = selectedCurrFromName.get().toString(),
+                    to = selectedCurrToName.get().toString(),
+                    value = converseValue.get().toString()
+                )
+            )
 
-        // insert currency into database
-//        inserCurrncy(CurrenciesHistory(from = curranciesList[curranciesList.filter { it==selectedCurrFrom }]))
+        }
     }
 
     fun swapbutton(v: View) {
@@ -110,6 +122,8 @@ constructor(private val mainRepository: MainRepository) : ViewModel() {
         var olToValue = selectedCurrTo.get()
         selectedCurrTo.set(olFromValue)
         selectedCurrFrom.set(olToValue)
+        currencyFromText.set("")
+        converseValue.set("")
 
     }
 
@@ -120,6 +134,11 @@ constructor(private val mainRepository: MainRepository) : ViewModel() {
                 postStateFlow.value = ApiState.Failure(e)
             }.collect { data ->
             }
+    }
+
+    fun detailsClick(v: View) {
+
+        Navigation.findNavController(v).navigate(R.id.detailsFragment)
     }
 
 

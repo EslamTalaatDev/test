@@ -1,115 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="model"
-            type="com.dev.test.allViewModel.MainViewModel" />
-    </data>
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layoutDirection="ltr"
-
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layoutDirection="ltr"
+        android:orientation="vertical"
+        tools:context=".ui.MainActivity">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:onItemSelected="@{(parent,view,pos,id)->model.onSelectItemTo(pos)}"
-            android:selectedItemPosition="@={model.selectedCurrTo}"
-            android:entries="@{model.curranciesList}"
-            android:layout_marginTop="50dp"
-            android:id="@+id/sp_to"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.848"
-            app:layout_constraintStart_toEndOf="@+id/iv_switch"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:onItemSelected="@{(parent,view,pos,id)->model.onSelectItemFrom(pos)}"
-            android:selectedItemPosition="@={model.selectedCurrFrom}"
-            android:entries="@{model.curranciesList}"
-            android:layout_marginTop="50dp"
-            android:id="@+id/sp_from"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toStartOf="@+id/iv_switch"
-            app:layout_constraintHorizontal_bias="0.128"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:onClick="@{model::swapbutton}"
-            android:id="@+id/iv_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@+id/sp_from"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/sp_to"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_switch" />
-
-        <EditText
-            android:afterTextChanged="@{(text) -> model.getConversvalue(text)}"
-            android:text="@={model.currencyFromText}"
-            android:gravity="center_horizontal"
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="from"
-            app:layout_constraintEnd_toEndOf="@+id/sp_from"
-            app:layout_constraintStart_toStartOf="@+id/sp_from"
-            app:layout_constraintTop_toBottomOf="@+id/sp_from" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Details"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
-        <TextView
-            android:inputType="numberDecimal"
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:text="@={model.converseValue}"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/sp_to"
-            app:layout_constraintStart_toStartOf="@+id/sp_to"
-            app:layout_constraintTop_toBottomOf="@+id/sp_to" />
-
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/my_nav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

@@ -1,4 +1,4 @@
-package com.dev.test.Util
+package com.dev.test.util
 
 sealed class ApiState{
     object Loading : ApiState()
